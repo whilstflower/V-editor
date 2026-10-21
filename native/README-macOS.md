@@ -10,23 +10,41 @@ SysEx transmission are also implemented.
 ## Requirements
 
 - An Intel Mac running macOS 12 or later
-- Xcode Command Line Tools
-- CMake 3.20 or later
-- Qt 6 Widgets built for macOS `x86_64`
+- Xcode or the Xcode Command Line Tools
+- Qt Creator
+- Qt 6 Widgets for macOS `x86_64`
+- CMake 3.20 or later (available to Qt Creator)
 
-Install Qt with the official Qt installer and select the macOS `x86_64` kit.
-Then configure and build from the repository root:
+Install Qt Creator and Qt with the official Qt installer. Select a Qt 6
+macOS `x86_64` kit with the Widgets component, and make sure the kit uses the
+Xcode compiler toolchain.
 
-```sh
-cmake -S native -B build-macos \
-  -DCMAKE_OSX_ARCHITECTURES=x86_64 \
-  -DCMAKE_PREFIX_PATH="$HOME/Qt/6.8.3/macos"
-cmake --build build-macos --config Release
-ctest --test-dir build-macos --output-on-failure
-open build-macos/VEditorNative.app
-```
+## Open and configure the project
 
-Adjust `CMAKE_PREFIX_PATH` to the Qt version and install location on the Mac.
+1. Open Qt Creator and choose **File > Open File or Project**.
+2. Select `native/CMakeLists.txt` from this repository.
+3. When prompted, select the Qt 6 macOS `x86_64` kit and create a build
+   directory, for example `native/build-macos`.
+4. In the CMake configuration settings for the project, add
+   `CMAKE_OSX_ARCHITECTURES` with the value `x86_64`. The selected Qt kit
+   supplies the Qt installation to CMake; no Qt path needs to be entered in a
+   terminal.
+5. Run CMake configuration from Qt Creator and check that it completes without
+   errors.
+
+## Build, test, and run
+
+Choose the `Release` configuration in Qt Creator, then use **Build > Build
+Project**. The `VEditorNative` target builds the macOS application bundle.
+
+Run the included tests from Qt Creator's **Tests** view after the project has
+configured. If the tests are not shown, enable CTest test discovery in the
+project's test settings and reconfigure. Run both `sysex_library_test` and
+`sysex_single_patch_test`.
+
+Select `VEditorNative` as the run target and use **Run** to launch the app.
+The first build may take longer while Qt Creator configures CMake and compiles
+the project.
 
 ## Port status
 
